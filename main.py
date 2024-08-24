@@ -19,7 +19,7 @@ client = APIClient(TOKEN, client_secret=SECRET, validate_token=False)
 app = Flask(__name__)
 app.secret_key = os.urandom(12).hex()
 
-log = logging.Logger(__name__)
+log = logging.getLogger(__name__)
 
 password = os.getenv("RCON_PASSWORD")
 
@@ -101,4 +101,4 @@ def logout():
     session.clear()
     return redirect("/")
 
-app.run(host="0.0.0.0", port=8080)
+app.run(host="0.0.0.0", port=8080, use_reloader=False)
