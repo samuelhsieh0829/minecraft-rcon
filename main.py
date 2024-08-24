@@ -5,6 +5,7 @@ import os
 from servers import Servers
 from check_user import check
 import logging
+import multiprocessing
 
 load_dotenv()
 
@@ -19,9 +20,18 @@ client = APIClient(TOKEN, client_secret=SECRET, validate_token=False)
 app = Flask(__name__)
 app.secret_key = os.urandom(12).hex()
 
+logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__name__)
 
 password = os.getenv("RCON_PASSWORD")
+
+def execute_rcon_command(server, command):
+    try:
+        response = Servers[server].send(command)
+        return response
+    except Exception as e:
+        log.error(f"Error executing RCON command: {e}")
+        return str(e)
 
 @app.route("/")
 def index():
@@ -75,7 +85,10 @@ def send_command(server:str, command:str):
             if server not in Servers:
                 return "Server not found"
             log.info(f"Admin {current_user.username} did \"/send/{server}/{command}\"")
-            return Servers[server].send(command)
+            with multiprocessing.Pool(1) as pool:
+                result = pool.apply_async(execute_rcon_command, (server, command))
+                response = result.get(timeout=10)
+            return response
         else:
             log.info(f"Non-admin {current_user.username} is trying to do \"/send/{server}/{command}\"")
             abort(403)
@@ -101,4 +114,4 @@ def logout():
     session.clear()
     return redirect("/")
 
-app.run(host="0.0.0.0", port=8080, use_reloader=False)
+app.run(host="0.0.0.0", port=8080, debug=True)
