@@ -1,5 +1,5 @@
 # Minecraft Rcon Website
-一個可以透過網站管理多個minecraft伺服器的專案
+用網站透過Rcon管理多個minecraft伺服器
 
 ## .env
 `RCON_PASSWORD` = 你的Minecraft伺服器rcon密碼(server.properties中的`rcon.password`) <br>
