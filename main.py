@@ -28,6 +28,7 @@ def index():
         return render_template("index.html", user=current_user.username)
     return redirect("/login")
 
+#登入
 @app.route("/login")
 def login():
     if OAUTH_URL is None:
@@ -46,6 +47,7 @@ def callback():
         
     return redirect("/")
 
+#Rcon
 @app.route("/rcon/<server>")
 def rcon(server:str):
     if "token" in session:
@@ -71,6 +73,7 @@ def send_command(server:str, command:str):
     else:
         abort(403)
 
+#錯誤處理
 @app.errorhandler(403)
 def error403():
     return "403 Error"
