@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="{{url_for('static', filename='css/style.css')}}" rel="stylesheet">
+    <script src="{{url_for('static', filename='js/rcon.js')}}"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ server }}</title>
+</head>
+<body>
+    <h1>Hello {{ user }}</h1>
+    <p>Server name:{{ server }}</p>
+    <span id="server_name" style="display: none;">{{ server }}</span>
+    <input type="text" class="input" id="send_command">
+    <label class="command">Send command</label>
+    <button type="submit" class="submit-button" onclick="send()">Send</button>
+</body>
+</html>
