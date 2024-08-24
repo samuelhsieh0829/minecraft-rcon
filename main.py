@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 import os
 from servers import Servers
 from check_user import check
+import logging
 
 load_dotenv()
 
@@ -17,6 +18,8 @@ client = APIClient(TOKEN, client_secret=SECRET, validate_token=False)
 
 app = Flask(__name__)
 app.secret_key = os.urandom(12).hex()
+
+log = logging.Logger(__name__)
 
 password = os.getenv("RCON_PASSWORD")
 
@@ -44,7 +47,7 @@ def callback():
         current_user = bearer_client.users.get_current_user()
         session["token"] = access_token
         session.permanent = True
-        
+        log.info(f"User {current_user.username} logged in")
     return redirect("/")
 
 #Rcon
@@ -54,8 +57,10 @@ def rcon(server:str):
         bearer_client = APIClient(session.get("token"), bearer=True)
         current_user = bearer_client.users.get_current_user()
         if not check(current_user.username):
+            log.info(f"Non-admin {current_user.username} is trying to visit \"/rcon/{server}\"")
             abort(403)
         if server in Servers:
+            log.info(f"Admin {current_user.username} is visiting \"/rcon/{server}\"")
             return render_template("rcon.html", user=current_user.username, server=server)
         else:
             abort(404)
@@ -69,24 +74,30 @@ def send_command(server:str, command:str):
         if check(current_user.username):
             if server not in Servers:
                 return "Server not found"
+            log.info(f"Admin {current_user.username} did \"/send/{server}/{command}\"")
             return Servers[server].send(command)
         else:
+            log.info(f"Non-admin {current_user.username} is trying to do \"/send/{server}/{command}\"")
             abort(403)
     else:
         abort(403)
 
 #錯誤處理
 @app.errorhandler(403)
-def error403():
+def error403(error):
     return "403 Error"
 
 @app.errorhandler(404)
-def error404():
+def error404(error):
     return "404 Error"
 
 #登出
 @app.route("/logout")
 def logout():
+    if "token" in session:
+        bearer_client = APIClient(session.get("token"), bearer=True)
+        current_user = bearer_client.users.get_current_user()
+        log.info(f"User {current_user.username} logged out")
     session.clear()
     return redirect("/")
 
