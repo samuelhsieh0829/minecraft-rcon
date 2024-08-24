@@ -30,3 +30,5 @@ Ex:`admin = ["e04._.40e", "a.uuu"]` <br>
 * 傳送指令也可以手動透過連結:`/send/伺服器名稱/指令`，Ex: https://rcon.ckcsc.net/mod/list
 * 若不是在check_user.py中的管理員列表，進入`/rcon/伺服器名稱`和使用`/send/伺服器名稱/指令`時，會被403
 * 可以透過連結"/logout"登出，Ex: https://rcon.ckcsc.net/logout
+* 後臺會記錄使用者登入、登出及使用各種連結
+* 可以透過Dockerfile將其部屬到Docker
