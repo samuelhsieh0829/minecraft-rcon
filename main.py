@@ -1,4 +1,5 @@
 from flask import Flask, redirect, session, render_template, request, abort
+from mcrcon import MCRcon
 from zenora import APIClient
 from dotenv import load_dotenv
 import os
@@ -75,7 +76,9 @@ def send_command(server:str, command:str):
             if server not in Servers:
                 return "Server not found"
             log.info(f"Admin {current_user.username} did \"/send/{server}/{command}\"")
-            return Servers[server].send(command)
+            with MCRcon(Servers[server].IP, Servers[server].password, Servers[server].PORT) as rcon:
+                resp = rcon.command(command)
+            return resp
         else:
             log.info(f"Non-admin {current_user.username} is trying to do \"/send/{server}/{command}\"")
             abort(403)
