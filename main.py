@@ -53,6 +53,8 @@ def rcon(server:str):
     if "token" in session:
         bearer_client = APIClient(session.get("token"), bearer=True)
         current_user = bearer_client.users.get_current_user()
+        if not check(current_user.username):
+            abort(403)
         if server in Servers:
             return render_template("rcon.html", user=current_user.username, server=server)
         else:
@@ -81,5 +83,11 @@ def error403():
 @app.errorhandler(404)
 def error404():
     return "404 Error"
+
+#登出
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/")
 
 app.run(host="127.0.0.1", port=80, debug=True)

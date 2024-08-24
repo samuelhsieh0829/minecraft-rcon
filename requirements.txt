@@ -1,0 +1,4 @@
+Flask==3.0.3
+mcrcon==0.7.0
+python-dotenv==1.0.1
+Zenora==0.0.3.post1
