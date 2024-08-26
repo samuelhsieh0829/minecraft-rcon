@@ -2,15 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link href="{{url_for('static', filename='css/style.css')}}" rel="stylesheet">
-    <script src="{{url_for('static', filename='js/index.js')}}"></script>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rcon index</title>
+    <title>Rcon Index</title>
 </head>
 <body>
-    <h1>Hello {{ user }}</h1>
+    <h1>Hello, {{ user }}</h1>
     <p>Go to server:</p>
-    <input type="text" class="input" id="goto">
-    <button type="submit" class="submit-button" onclick="gorcon()">Go</button>
+    <div class="radio-input">
+        <label class="label">
+            <input type="radio" id="value-1" name="value-radio" value="lobby" checked>
+            <span class="text">Lobby</span>
+        </label>
+        <label class="label">
+            <input type="radio" id="value-2" name="value-radio" value="survive">
+            <span class="text">Survive</span>
+        </label>
+        <label class="label">
+            <input type="radio" id="value-3" name="value-radio" value="activity">
+            <span class="text">Activity</span>
+        </label>
+    </div>
+    <button type="button" class="submit-button" onclick="gorcon()">Go</button>
 </body>
 </html>

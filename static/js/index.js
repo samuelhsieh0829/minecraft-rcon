@@ -1,4 +1,4 @@
 function gorcon() {
-    const location = document.getElementById("goto").value;
-    window.location.href = `/rcon/${location}`;
+    const selectedServer = document.querySelector('input[name="value-radio"]:checked').value;
+    window.location.href = `/rcon/${selectedServer}`;
 }

@@ -3,5 +3,9 @@ function send() {
     const command = document.getElementById("send_command").value;
     fetch(`/send/${server}/${command}`)
         .then(response => response.text())
-        .then(response => { alert(response); });
+        .then(data => {
+            document.getElementById('response').innerText = data;
+            document.getElementById("send_command").value = "";
+        })
+        .catch(error => console.error('Error:', error));
 }

@@ -11,8 +11,9 @@
     <h1>Hello {{ user }}</h1>
     <p>Server name:{{ server }}</p>
     <span id="server_name" style="display: none;">{{ server }}</span>
-    <input type="text" class="input" id="send_command">
-    <label class="command">Send command</label>
-    <button type="submit" class="submit-button" onclick="send()">Send</button>
+
+    <div id="response"></div><br><br>
+    <input id="send_command" size="120" placeholder="command"><br><br>
+    <button onclick="send()">send</button>
 </body>
 </html>
