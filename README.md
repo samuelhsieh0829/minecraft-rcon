@@ -26,7 +26,7 @@ Ex:`admin = ["e04._.40e", "a.uuu"]` <br>
 ## 其他
 * 未登入狀態皆會被重新導向至Discord登入畫面
 * 本專案需要先於Discord developer Portal新增應用程式，並將資訊填入.env檔才能使用
-* Go to server底下需填入在servers.py中新增的伺服器名稱來快速前往Rcon指令區
+* Go to server底下會有在servers.py中新增的伺服器名稱可以選擇以前往Rcon指令區
 * 傳送指令也可以手動透過連結:`/send/伺服器名稱/指令`，Ex: https://rcon.ckcsc.net/mod/list
 * 若不是在check_user.py中的管理員列表，進入`/rcon/伺服器名稱`和使用`/send/伺服器名稱/指令`時，會被403
 * 可以透過連結"/logout"登出，Ex: https://rcon.ckcsc.net/logout
