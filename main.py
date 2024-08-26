@@ -1,4 +1,4 @@
-from flask import Flask, redirect, session, render_template, request, abort
+from flask import Flask, redirect, session, render_template, request, abort, jsonify
 from zenora import APIClient
 from dotenv import load_dotenv
 import os
@@ -7,6 +7,7 @@ from check_user import check
 import logging
 import multiprocessing
 
+print(list(Servers.keys()))
 load_dotenv()
 
 TOKEN = os.getenv("DCTOKEN")
@@ -20,7 +21,7 @@ client = APIClient(TOKEN, client_secret=SECRET, validate_token=False)
 app = Flask(__name__)
 app.secret_key = os.urandom(12).hex()
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
 
 password = os.getenv("RCON_PASSWORD")
@@ -70,7 +71,7 @@ def get_servers():
             log.info(f"Non-admin {current_user.username} is trying to get servers")
             abort(403)
         log.info(f"Admin {current_user.username} is getting servers")
-        return Servers.keys()
+        return jsonify(list(Servers.keys()))
     abort(403)
 
 @app.route("/rcon/<server>")
