@@ -61,6 +61,18 @@ def callback():
     return redirect("/")
 
 #Rcon
+@app.route("/get_servers")
+def get_servers():
+    if "token" in session:
+        bearer_client = APIClient(session.get("token"), bearer=True)
+        current_user = bearer_client.users.get_current_user()
+        if not check(current_user.username):
+            log.info(f"Non-admin {current_user.username} is trying to get servers")
+            abort(403)
+        log.info(f"Admin {current_user.username} is getting servers")
+        return Servers.keys()
+    abort(403)
+
 @app.route("/rcon/<server>")
 def rcon(server:str):
     if "token" in session:
